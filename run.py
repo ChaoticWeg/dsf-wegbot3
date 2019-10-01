@@ -27,5 +27,7 @@ async def on_ready():
 
 
 if __name__ == "__main__":
-    token = os.getenv("BOT_TOKEN")
+    token = os.getenv("BOT_TOKEN", None)
+    if token is None:
+        raise RuntimeError("BOT_TOKEN environment variable is REQUIRED to run the bot")
     bot.run(token)
