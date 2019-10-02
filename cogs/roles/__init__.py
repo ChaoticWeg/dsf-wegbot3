@@ -132,11 +132,14 @@ class RolesCog(DatabaseHandlingCog, name="Roles"):
     @addrole.error
     @removerole.error
     async def addrole_error(self, ctx: commands.Context, error: Exception):
-        if isinstance(error, commands.CheckFailure):
+        if isinstance(error, commands.NotOwner):
+            await ctx.send(f"{ctx.author.mention}, you don't have permission to use that command.")
+        elif isinstance(error, commands.NoPrivateMessage):
             await ctx.send("you can't request a role from a DM")
-            print(error)
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send("some check didn't work and i'm not sure which")
         elif isinstance(error, commands.CommandError):
-            await ctx.send(f"{ctx.author.mention}, {str(error)}")
+            await ctx.send(f"{ctx.author.mention}, tell weg i found a(n) {str(error)}")
         else:
             await ctx.send(f"something happened (`{type(error).__name__}`). tell weg to check the logs")
             print(error)
