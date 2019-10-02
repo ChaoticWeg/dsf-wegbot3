@@ -4,6 +4,8 @@ from discord.ext import commands
 from .base_cog import MetaBaseCog
 from ..errors import RoleNotFoundError, RequestableRoleAsModError, RoleNotAddedError, RoleAlreadyAddedError, \
     RoleNotRemovedError, WegbotCommandError
+
+from ..utils.arrays import concat_array
 from ..utils.checks import is_mod
 
 
@@ -112,5 +114,4 @@ class MetaModsCog(MetaBaseCog, name="MetaMods", command_attrs=dict(hidden=True))
         if len(roles) == 0:
             await ctx.send("there are no mod roles listed for this server")
         else:
-            roles_joined = "`, `".join([r.name for r in roles])
-            await ctx.send(f"mod roles in this server: `{roles_joined}`")
+            await ctx.send(f"mod roles in this server: `{concat_array([r.name for r in roles])}`")
