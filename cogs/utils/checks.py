@@ -1,5 +1,4 @@
 from discord.ext import commands
-from ..db import DatabaseCog
 
 import discord
 
@@ -8,7 +7,7 @@ def is_mod():
     async def predicate(ctx: commands.Context):
         bot: commands.Bot = ctx.bot
         author: discord.Member = ctx.author
-        db: DatabaseCog = bot.get_cog("Database")
+        db = bot.get_cog("Database")
 
         mod_roles = db.mods.get_all(ctx.guild)
         mod_role_ids = [str(r_id) for r_id in mod_roles]
