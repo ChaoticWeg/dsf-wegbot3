@@ -33,7 +33,6 @@ class RolesCog(DatabaseHandlingCog, name="Roles"):
         super().__init__(bot)
 
     @commands.command(name="addrole")
-    @commands.has_role("Verified")
     @commands.guild_only()
     async def addrole(self, ctx: commands.Context, *, role_name: str):
         """ Request a role or roles in this server """
@@ -89,7 +88,6 @@ class RolesCog(DatabaseHandlingCog, name="Roles"):
             await ctx.send(f"{ctx.author.mention}, {msg}")
 
     @commands.command(name="removerole")
-    @commands.has_role("Verified")
     @commands.guild_only()
     async def removerole(self, ctx: commands.Context, *, role_name: str):
         """ Remove a role from yourself """
@@ -135,7 +133,7 @@ class RolesCog(DatabaseHandlingCog, name="Roles"):
     @removerole.error
     async def addrole_error(self, ctx: commands.Context, error: Exception):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send("something's not right. either you're not verified, or this is a DM. either way, no.")
+            await ctx.send("you can't request a role from a DM")
             print(error)
         elif isinstance(error, commands.CommandError):
             await ctx.send(f"{ctx.author.mention}, {str(error)}")
