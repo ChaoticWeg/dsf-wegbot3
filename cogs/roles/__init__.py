@@ -137,7 +137,7 @@ class RolesCog(DatabaseHandlingCog, name="Roles"):
         elif isinstance(error, commands.NoPrivateMessage):
             await ctx.send("you can't request a role from a DM")
         elif isinstance(error, commands.CheckFailure):
-            await ctx.send("some check didn't work and i'm not sure which")
+            await ctx.send(f"some check didn't work and i'm not sure which (`{type(error).__name__}`)")
         elif isinstance(error, commands.CommandError):
             await ctx.send(f"{ctx.author.mention}, tell weg i found a(n) {str(error)}")
         else:
