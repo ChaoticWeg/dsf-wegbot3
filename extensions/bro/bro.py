@@ -24,7 +24,3 @@ def bro_factory(bot):
                     await message.add_reaction(ping_emoji)
 
     return respond_with_bro
-
-
-def setup(bot):
-    bot.add_listener(bro_factory(bot), "on_message")
