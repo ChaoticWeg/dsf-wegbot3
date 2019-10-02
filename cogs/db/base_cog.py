@@ -1,4 +1,5 @@
 from discord.ext import commands
+from ..errors import DatabaseNullError
 
 
 class DatabaseHandlingCog(commands.Cog):
@@ -8,4 +9,5 @@ class DatabaseHandlingCog(commands.Cog):
         self.db = bot.get_cog("Database")
 
     def cog_check(self, ctx):
-        return self.db is not None
+        if self.db is None:
+            raise DatabaseNullError(self.__class__.__name__)
