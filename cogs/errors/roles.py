@@ -19,3 +19,8 @@ class RoleAlreadyGivenError(WegbotCommandError):
 class RoleNeverGivenError(WegbotCommandError):
     def __init__(self, role_name):
         super().__init__(f"you don't currently have the role `{role_name}`")
+
+
+class AddingModRoleError(WegbotCommandError):
+    def __init__(self, role_name):
+        super().__init__(f"role `{role_name}` is a mod role and cannot be marked as requestable")

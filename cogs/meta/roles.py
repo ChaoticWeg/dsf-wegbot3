@@ -2,7 +2,8 @@ from discord.ext import commands
 from .base_cog import MetaBaseCog
 
 from ..errors import RoleNotFoundError, RoleAlreadyAddedError, RoleNotAddedError, \
-    RoleNotRequestableError, RoleNotRemovedError, WegbotCommandError
+    RoleNotRequestableError, RoleNotRemovedError, WegbotCommandError, AddingModRoleError
+from ..utils.arrays import concat_array
 
 import discord
 import sqlite3
@@ -29,10 +30,10 @@ class MetaRolesCog(MetaBaseCog, name="MetaRoles", command_attrs=dict(hidden=True
         role_ids = self.db.roles.get_all(ctx.guild)
         if len(role_ids) < 1:
             await ctx.send("there are no requestable roles in this server.")
-
-        roles = [discord.utils.find(lambda r: str(r.id) == str(r_id), ctx.guild.roles) for r_id in role_ids]
-        role_names = [r.name for r in roles if r is not None]
-        await ctx.send(f"the following roles are requestable here: `{'` `'.join(role_names)}`")
+        else:
+            roles = [discord.utils.find(lambda r: str(r.id) == str(r_id), ctx.guild.roles) for r_id in role_ids]
+            role_names = [r.name for r in roles if r is not None]
+            await ctx.send(f"the following roles are requestable here: {concat_array(role_names)}")
 
     @base_cmd.command(name="add")
     async def add_role(self, ctx: commands.Context, *, role_name: str):
@@ -45,6 +46,9 @@ class MetaRolesCog(MetaBaseCog, name="MetaRoles", command_attrs=dict(hidden=True
 
         if self.db.roles.has(role):
             raise RoleAlreadyAddedError(role.name)
+
+        if self.db.mods.has(role):
+            raise AddingModRoleError(role.name)
 
         self.db.roles.add(role)
 
@@ -83,7 +87,11 @@ class MetaRolesCog(MetaBaseCog, name="MetaRoles", command_attrs=dict(hidden=True
         await ctx.send(f"success: there are now {new_roles_count} requestable roles in this server")
 
     @base_cmd.error
-    async def base_cmd_error(self, ctx: commands.Context, error: discord.DiscordException):
+    @add_role.error
+    @remove_role.error
+    @clear_roles.error
+    @list_roles.error
+    async def cog_error(self, ctx: commands.Context, error: discord.DiscordException):
         if isinstance(error, WegbotCommandError):
             await ctx.send(str(error))
         elif isinstance(error, commands.MissingRequiredArgument):
