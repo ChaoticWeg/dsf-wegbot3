@@ -1,0 +1,2 @@
+class WegbotException(Exception):
+    pass

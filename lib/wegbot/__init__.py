@@ -1,0 +1,1 @@
+from .wegbot import Wegbot
