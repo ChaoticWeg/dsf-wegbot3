@@ -9,12 +9,18 @@ class WegbotDatabase:
     def __init__(self):
         self.root: Path = get_data_dir()
         self.file: Path = self.root / "wegbot.db"
+
         self.__cnx: sqlite3.Connection = sqlite3.connect(str(self.file))
+        self.__initialized: bool = False
 
         self.roles = RolesHandler(self.file)
 
     def initialize(self):
+        if self.__initialized:
+            return
+
         self.roles.initialize()
+        self.__initialized = True
 
     def connect(self):
         return sqlite3.connect(str(self.file))
