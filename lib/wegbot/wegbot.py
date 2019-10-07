@@ -11,3 +11,7 @@ class Wegbot(commands.Bot):
     def __init__(self, command_prefix="?"):
         super().__init__(command_prefix, description=Wegbot.description)
         self.db: WegbotDatabase = WegbotDatabase()
+
+    async def on_ready(self):
+        print(f"logged in as {self.user}")
+        self.db.initialize()

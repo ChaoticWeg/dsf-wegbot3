@@ -14,12 +14,6 @@ for c in cog_names:
     bot.load_extension(f"lib.{c}")
 
 
-@bot.event
-async def on_ready():
-    print(f"logged in as {bot.user}")
-    bot.db.initialize()
-
-
 if __name__ == "__main__":
     token = os.getenv("BOT_TOKEN", None)
     if token is None:
