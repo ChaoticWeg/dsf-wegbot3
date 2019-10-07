@@ -1,21 +1,28 @@
-from discord.ext.commands import Cog, CheckFailure, NotOwner, NoPrivateMessage
+import sqlite3
 
-from ..database import WegbotDatabase
-from ..wegbot import Wegbot
+from discord.ext.commands import check, Cog, Context, CheckFailure, NotOwner, NoPrivateMessage
 
-from ..errors.database import DatabaseNotReachableError, WegbotDatabaseError
 from ..errors.base import WegbotException
+from ..errors.checks import InvalidTableError
+from ..errors.database import DatabaseNotReachableError, WegbotDatabaseError
+from ..wegbot import Wegbot
 
 
 class WegbotCog(Cog):
     def __init__(self, bot: Wegbot):
-        self.db: WegbotDatabase = bot.db.connect()
+        self.db: sqlite3.Connection = bot.db.connect()
 
-    async def cog_check(self, ctx):
-        """ Check that the database is reachable for every command and subcommand """
-        if self.db is None:
-            raise DatabaseNotReachableError(self.__class__.__name__)
-        return True
+    def cog_unload(self):
+        self.db.close()
+
+    @staticmethod
+    def has_table(tablename: str):
+        def check_table(ctx: Context):
+            bot: Wegbot = ctx.bot
+            if not bot.db.check_table(tablename):
+                raise InvalidTableError(ctx.command, tablename)
+            return True
+        return check(check_table)
 
     async def cog_command_error(self, ctx, error):
         """ Gracefully handle errors that might arise from command errors """
@@ -23,6 +30,8 @@ class WegbotCog(Cog):
 
         if isinstance(error, DatabaseNotReachableError):
             await ctx.send(f"{ctx.author.mention}, i can't seem to reach my database right now.")
+        elif isinstance(error, InvalidTableError):
+            await ctx.send(f"{ctx.author.mention}, tell weg i can't reach the `{error.tablename}` table")
         elif isinstance(error, WegbotDatabaseError):
             await ctx.send(f"{ctx.author.mention}, i had some sort of database error.")
         elif isinstance(error, WegbotException):
