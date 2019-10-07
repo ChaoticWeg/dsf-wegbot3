@@ -1,19 +1,16 @@
-import sqlite3
-
 from discord.ext import commands
 
+from ..database import WegbotDatabase
 from ..errors.base import WegbotException
 from ..errors.checks import InvalidTableError
+from ..errors.commands import WegbotCommandError
 from ..errors.database import DatabaseNotReachableError, WegbotDatabaseError
 from ..wegbot import Wegbot
 
 
 class WegbotCog(commands.Cog):
     def __init__(self, bot: Wegbot):
-        self.db: sqlite3.Connection = bot.db.connect()
-
-    def cog_unload(self):
-        self.db.close()
+        self.db: WegbotDatabase = bot.db
 
     @staticmethod
     def has_table(tablename: str):
@@ -49,6 +46,8 @@ class WegbotCog(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, one or more command checks failed, so i can't respond to that.")
 
         # command errors
+        elif isinstance(error, WegbotCommandError):
+            await ctx.send(f"{ctx.author.mention}, {error}.")
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"{ctx.author.mention}, you're missing a required argument. use `?help` if you need it.")
         elif isinstance(error, commands.CommandError):
