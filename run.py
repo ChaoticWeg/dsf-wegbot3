@@ -1,10 +1,9 @@
 import os
 
-import discord
 from dotenv import load_dotenv
 
-from lib.wegbot import Wegbot
 from lib.cogs import cog_names
+from lib.wegbot import Wegbot
 
 load_dotenv()
 
@@ -18,7 +17,7 @@ for c in cog_names:
 @bot.event
 async def on_ready():
     print(f"logged in as {bot.user}")
-    await bot.change_presence(activity=discord.Game(name="discord.py rewrite"))
+    bot.db.initialize()
 
 
 if __name__ == "__main__":
