@@ -1,23 +1,18 @@
 import os
 
 import discord
-from discord.ext import commands
 from dotenv import load_dotenv
 
-from cogs import cog_names
-from extensions import extension_names
+from lib.wegbot import Wegbot
+from lib.cogs import cog_names
 
 load_dotenv()
 
-bot = commands.Bot(command_prefix=os.getenv("COMMAND_PREFIX", "?"))
+bot: Wegbot = Wegbot(command_prefix=os.getenv("COMMAND_PREFIX", "?"))
 
-for c_name in cog_names:
-    print(f"loading {c_name}")
-    bot.load_extension(c_name)
-
-for x_name in extension_names:
-    print(f"loading {x_name}")
-    bot.load_extension(x_name)
+for c in cog_names:
+    print(f"loading {c}")
+    bot.load_extension(f"lib.{c}")
 
 
 @bot.event
