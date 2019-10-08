@@ -7,5 +7,5 @@ LABEL description="wegbot version 3 (discord.py)"
 WORKDIR /src
 COPY . /src
 
-RUN pip install -r requirements.txt
+RUN make install
 CMD python run.py
