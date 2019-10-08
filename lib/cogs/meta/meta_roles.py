@@ -1,11 +1,10 @@
 from datetime import datetime
+
+import discord
 from discord.ext import commands
-from typing import Iterable
 
 from lib.cogs.base import WegbotCog
 from lib.errors.commands import NoSuchRoleError, RolesNotClearedError
-
-import discord
 
 
 class MetaRolesCog(WegbotCog, name="MetaRoles"):
@@ -14,11 +13,13 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @WegbotCog.has_table("roles")
     @commands.group("roles")
     async def cmd(self, ctx: commands.Context):
+        """ List available roles """
         if ctx.invoked_subcommand is None:
             await self.list.invoke(ctx)
 
     @cmd.command("list")
     async def list(self, ctx: commands.Context):
+        """ List available roles """
         roles = self.db.roles.get_all(ctx.guild)
         role_names = [f"`{r.name}`" for r in roles if r is not None]
 
@@ -36,6 +37,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @commands.is_owner()
     @cmd.command("add", hidden=True)
     async def add(self, ctx: commands.Context, *, role_name: str):
+        """ Add a requestable role to the database """
         role: discord.Role = discord.utils.get(ctx.guild.roles, name=role_name)
 
         if role is None:
@@ -49,6 +51,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @commands.is_owner()
     @cmd.command("remove", hidden=True)
     async def remove(self, ctx: commands.Context, *, role_name: str):
+        """ Remove a requestable role from the database """
         role: discord.Role = discord.utils.get(ctx.guild.roles, name=role_name)
 
         if role is None:
@@ -60,6 +63,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @commands.is_owner()
     @cmd.command("clear", hidden=True)
     async def clear(self, ctx: commands.Context):
+        """ Clear all requestable roles from the database """
         self.db.roles.clear(ctx.guild)
 
         roles_left: int = self.db.roles.count(ctx.guild)
