@@ -5,4 +5,6 @@ install:
 
 deploy:
 	docker build -t dsf-wegbot3 .
-	docker run -v /home/weg/.dsf-wegbot:/root/.dsf-wegbot --name dsf-wegbot3 dsf-wegbot3
+	-docker rm -f dsf-wegbot3
+	docker run -it -v /home/weg/.dsf-wegbot:/root/.dsf-wegbot --name dsf-wegbot3 dsf-wegbot3
+
