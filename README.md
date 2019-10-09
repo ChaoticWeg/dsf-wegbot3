@@ -23,7 +23,7 @@ in a public channel, so unless otherwise specified, you cannot DM commands to th
 
 Note that only verified users can use commands.
 
-#### Public commands
+### Public commands
 
 These commands are open to public use by all verified Discord members.
 
@@ -46,7 +46,7 @@ These commands are open to public use by all verified Discord members.
     - Notes:
         - Roles can be relinquished in the same way that they are requested, so the same notes for `?addrole` apply here.
 
-#### Restricted Commands
+### Restricted Commands
 
 These commands are only available to elevated users, known to common folk as "moderators" or "mods". 👀
 
@@ -60,12 +60,13 @@ These commands are only available to elevated users, known to common folk as "mo
     - Parameters:
         - `role_name` - The name of the eligible role to be declared ineligible.
 
-#### Owner-only Commands
+### Owner-only Commands
 
 These commands are only available to me (`weg`) as the owner of the bot.
 
 Currently no owner-only commands have been implemented.
 
+<br />
 
 ## Extensions
 
