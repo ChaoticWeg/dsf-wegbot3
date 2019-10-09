@@ -20,7 +20,7 @@ class RolesHandler(DatabaseHandler):
 
     def has(self, role: discord.Role):
         cur = self.db.cursor()
-        cur.execute("SELECT COUNT(role_id) FROM roles WHERE role_id = ?", (str(role.id,)))
+        cur.execute("SELECT COUNT(*) FROM roles WHERE role_id = ?", (str(role.id),))
         count = cur.fetchone()[0]
         return int(count) > 0
 
