@@ -11,7 +11,11 @@ class RolesCog(WegbotCog, name="Roles"):
     @staticmethod
     def parse_roles(ctx: commands.Context, roles: Iterable[str]):
         role_names = [r.strip() for r in roles]
-        return [rnn for rnn in [discord.utils.get(ctx.guild.roles, name=r) for r in role_names] if rnn is not None]
+        return [
+            rnn for rnn in [
+                discord.utils.find(lambda rn: rn.name.lower() == r.lower(), ctx.guild.roles) for r in role_names
+            ] if rnn is not None
+        ]
 
     @commands.guild_only()
     @commands.has_role("Verified")
