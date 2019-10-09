@@ -1,10 +1,16 @@
-from discord.ext.commands import CommandError
+from discord.ext.commands import Command, CommandError
 from discord import Role, Guild
 
 
 class WegbotCommandError(CommandError):
     """ Base command error """
     pass
+
+
+class CommandNotImplementedError(WegbotCommandError):
+    """ This command has not yet been implemented """
+    def __init__(self, command: Command):
+        super().__init__(f"command `{command.qualified_name}` has not yet been implemented. go shriek at weg about it.")
 
 
 class NoSuchRoleError(WegbotCommandError):
