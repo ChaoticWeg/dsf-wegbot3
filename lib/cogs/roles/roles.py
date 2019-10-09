@@ -6,6 +6,7 @@ import discord
 
 
 class RolesCog(WegbotCog, name="Roles"):
+    """ Tools for requesting and relinquishing eligible roles """
 
     @staticmethod
     def parse_roles(ctx: commands.Context, roles: Iterable[str]):
@@ -28,6 +29,14 @@ class RolesCog(WegbotCog, name="Roles"):
             return
 
         roles = RolesCog.parse_roles(ctx, role_name.split(","))
+        ineligible_roles = [r for r in roles if not self.db.roles.has(r)]
+
+        if len(ineligible_roles) > 0:
+            ineligible_names = [f"`{r.name}`" for r in ineligible_roles]
+            plurality = "roles are" if len(ineligible_names) > 1 else "role is"
+            await ctx.send(f"{ctx.author.mention}, the following {plurality} ineligible to be requested: "
+                           + ", ".join(ineligible_names))
+            return
 
         if len(roles) == 0:
             msg: str = f"{ctx.author.mention}, `{role_name}` doesn't match any roles."
@@ -64,6 +73,14 @@ class RolesCog(WegbotCog, name="Roles"):
             return
 
         roles = RolesCog.parse_roles(ctx, role_name.split(","))
+        ineligible_roles = [r for r in roles if not self.db.roles.has(r)]
+
+        if len(ineligible_roles) > 0:
+            ineligible_names = [f"`{r.name}`" for r in ineligible_roles]
+            plurality = "roles are" if len(ineligible_names) > 1 else "role is"
+            await ctx.send(f"{ctx.author.mention}, the following {plurality} ineligible to be requested: "
+                           + ", ".join(ineligible_names))
+            return
 
         if len(roles) == 0:
             msg: str = f"{ctx.author.mention}, `{role_name}` doesn't match any roles."

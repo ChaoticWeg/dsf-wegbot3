@@ -18,6 +18,12 @@ class RolesHandler(DatabaseHandler):
             if rnn is not None
         ]
 
+    def has(self, role: discord.Role):
+        cur = self.db.cursor()
+        cur.execute("SELECT COUNT(role_id) FROM roles WHERE role_id = ?", (str(role.id,)))
+        count = cur.fetchone()[0]
+        return int(count) > 0
+
     def put(self, role: discord.Role):
         self.db.execute("INSERT INTO roles (role_id, guild_id) VALUES (?,?)", (str(role.id), str(role.guild.id)))
         self.db.commit()
