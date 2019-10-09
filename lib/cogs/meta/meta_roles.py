@@ -8,6 +8,7 @@ from lib.errors.commands import NoSuchRoleError, RolesNotClearedError
 
 
 class MetaRolesCog(WegbotCog, name="MetaRoles"):
+    """ Tools for determining which roles are requestable """
 
     @commands.guild_only()
     @WegbotCog.has_table("roles")
