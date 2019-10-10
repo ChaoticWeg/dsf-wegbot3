@@ -10,6 +10,7 @@ from ..wegbot import Wegbot
 
 class WegbotCog(commands.Cog):
     def __init__(self, bot: Wegbot):
+        self.bot = bot
         self.db: WegbotDatabase = bot.db
 
     @staticmethod
