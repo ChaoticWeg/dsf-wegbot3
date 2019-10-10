@@ -14,7 +14,8 @@ class KeyValueHandler(DatabaseHandler):
         cur = self.db.cursor()
         cur.execute("SELECT value FROM key_value WHERE key = ? AND guild_id = ?", (key, str(guild.id)))
         fetched: list = cur.fetchone()
-        if len(fetched) == 0:
+        if fetched is None or len(fetched) == 0:
+            print(f"database: {guild.name} :: {key} = {default} [default]")
             return default
         value = fetched[0]
         print(f"database: {guild.name} :: {key} = {value}")
