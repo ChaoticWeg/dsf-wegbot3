@@ -30,7 +30,7 @@ class KeyValueHandler(DatabaseHandler):
     def get_all(self, guild: discord.Guild):
         print(f"database: {guild.name} :: getting ALL key/value pairs")
         cur = self.db.cursor()
-        cur.execute("SELECT key, value FROM key_value WHERE guild_id = ?", (str(guild.id),))
+        cur.execute("SELECT key, value FROM key_value WHERE guild_id = ? ORDER BY key ASC", (str(guild.id),))
         result = [dict(key=c[0], value=c[1]) for c in cur.fetchall()]
         print(f"database: {guild.name} :: found {len(result)} k/v pairs")
         return result

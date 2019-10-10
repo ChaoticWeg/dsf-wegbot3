@@ -22,7 +22,7 @@ class MetaKeyValueCog(WegbotCog, name="MetaKeyValue", command_attrs=dict(hidden=
 
         pairs = self.db.key_value.get_all(ctx.guild)
 
-        pairs_descriptions = [f"**{p.get('key')}** : **{p.get('value')}**" for p in pairs]
+        pairs_descriptions = [f"`{p.get('key')}` : **{p.get('value')}**" for p in pairs]
         pairs_summary = "\n".join(pairs_descriptions) if len(pairs_descriptions) > 0 else "**(none)**"
 
         embed = discord.Embed(
