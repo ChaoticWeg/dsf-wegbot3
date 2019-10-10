@@ -3,7 +3,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from ..base import WegbotCog
+from lib.cogs.base import WegbotCog
 
 
 class MetaKeyValueCog(WegbotCog, name="MetaKeyValue", command_attrs=dict(hidden=True)):
