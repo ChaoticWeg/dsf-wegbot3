@@ -8,6 +8,12 @@ import discord
 class BroCog(WegbotCog, name="Bro"):
     """ BRO """
 
+    triggers = [
+        "bro",
+        "ese",
+        "hermano"
+    ]
+
     def is_on_cooldown(self, guild: discord.Guild):
         now_dt: datetime = datetime.utcnow()
 
@@ -29,7 +35,7 @@ class BroCog(WegbotCog, name="Bro"):
         if message.author.bot:
             return
 
-        if not message.clean_content.lower() == "bro":
+        if not message.clean_content.lower() in BroCog.triggers:
             return
 
         if self.is_on_cooldown(message.guild):
@@ -40,4 +46,4 @@ class BroCog(WegbotCog, name="Bro"):
         await message.channel.trigger_typing()
         this_bro = datetime.utcnow()
         self.db.key_value.set("last_bro", str(this_bro.timestamp()), message.guild)
-        await message.channel.send("BRO")
+        await message.channel.send(message.clean_content.upper())
