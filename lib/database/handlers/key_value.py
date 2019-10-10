@@ -10,12 +10,12 @@ class KeyValueHandler(DatabaseHandler):
         super().__init__(db_file, "key_value",
                          "key TEXT NOT NULL, value TEXT, guild_id TEXT NOT NULL, UNIQUE(key, guild_id)")
 
-    def get(self, key: str, guild: discord.Guild):
+    def get(self, key: str, guild: discord.Guild, default=None):
         cur = self.db.cursor()
         cur.execute("SELECT value FROM key_value WHERE key = ? AND guild_id = ?", (key, str(guild.id)))
         fetched: list = cur.fetchone()
         if len(fetched) == 0:
-            return None
+            return default
         value = fetched[0]
         print(f"database: {guild.name} :: {key} = {value}")
         return value
