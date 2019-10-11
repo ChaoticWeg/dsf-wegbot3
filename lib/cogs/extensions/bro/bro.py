@@ -11,7 +11,11 @@ class BroCog(WegbotCog, name="Bro"):
     triggers = [
         "bro",
         "ese",
-        "hermano"
+        "hermano",
+        "amigo",
+        "guey",
+        "güey",
+        "omg"
     ]
 
     def is_on_cooldown(self, guild: discord.Guild):
