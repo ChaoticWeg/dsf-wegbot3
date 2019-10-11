@@ -45,8 +45,18 @@ class MetaKeyValueCog(WegbotCog, name="MetaKeyValue", command_attrs=dict(hidden=
     @cmd.command("get")
     async def get(self, ctx: commands.Context, *, key: str):
         await ctx.trigger_typing()
-        value = self.db.key_value.get(key, ctx.guild)
-        await ctx.send(f"{ctx.author.mention}, `{key}` is set to `{value}`")
+        value = self.db.key_value.get(key, ctx.guild, default=None)
+        msg = f"`{key}` is set to `{value}`" if value is not None else f"there is no key here called `{key}`"
+        await ctx.send(f"{ctx.author.mention}, {msg}")
+
+    @cmd.command("delete")
+    async def delete(self, ctx: commands.Context, *, key: str):
+        await ctx.trigger_typing()
+        if not self.db.key_value.has(key, ctx.guild):
+            await ctx.send(f"{ctx.author.mention}, `{key}` does not exist for this guild")
+            return
+        self.db.key_value.delete(key, ctx.guild)
+        await ctx.send(f"{ctx.author.mention}, i have cleared the value for `{key}`")
 
     @cmd.command("clear")
     async def clear(self, ctx: commands.Context):
