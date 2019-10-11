@@ -9,7 +9,7 @@ class PinnerCog(WegbotCog, name="Pinner"):
     default_threshold = 3
 
     @WegbotCog.listener()
-    async def on_reaction_add(self, reaction: discord.Reaction):
+    async def on_reaction_add(self, reaction: discord.Reaction, _user):
         """ Pin a message if it gets enough reacts """
 
         # ignore pinned messages and reacts that aren't a pin
