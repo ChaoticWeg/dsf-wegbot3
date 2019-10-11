@@ -21,10 +21,18 @@ class KeyValueHandler(DatabaseHandler):
         print(f"database: {guild.name} :: {key} = {value}")
         return value
 
+    def has(self, key: str, guild: discord.Guild):
+        return self.get(key, guild, default=None) is not None
+
     def set(self, key: str, value: str, guild: discord.Guild):
         print(f"database: {guild.name} :: setting '{key}' to '{value}'")
         self.db.execute("INSERT OR REPLACE INTO key_value (key, value, guild_id) VALUES (?, ?, ?)",
                         (key, value, str(guild.id)))
+        self.db.commit()
+
+    def delete(self, key: str, guild: discord.Guild):
+        print(f"database: {guild.name} :: clearing value for '{key}'")
+        self.db.execute("DELETE FROM key_value WHERE key = ? AND guild_id = ?", (key, str(guild.id)))
         self.db.commit()
 
     def get_all(self, guild: discord.Guild):
