@@ -22,5 +22,5 @@ class PinnerCog(WegbotCog, name="Pinner"):
 
         if reaction.count >= threshold:
             # pin reacts are equal to or greater than threshold
-            await reaction.message.channel.pin()
+            await reaction.message.pin()
             # TODO: build embed and find somewhere to dump it
