@@ -46,9 +46,17 @@ class PinnerCog(WegbotCog, name="Pinner"):
             print(f"pinner: {guild.name} :: no admin channel linked; unable to bug guild admins for permission")
             return
 
+        # explicitly mention bot owner (me) if a member of the server and can see admin channel,
+        # else default to guild owner
+        target_member: discord.Member = discord.utils.get(guild.members, id=self.bot.owner_id)
+        target_member = (
+            target_member if target_member is not None and admin_channel.permissions_for(target_member).read_messages
+            else guild.owner
+        )
+
         # admin channel exists, notify
         await admin_channel.send(
-            f"{guild.owner.mention}, i need the 'Manage Messages' permission to pin a message in " +
+            f"{target_member.mention}, i need the 'Manage Messages' permission to pin a message in " +
             f"{channel.mention} and i'm bugging you for it now. if you don't want to give " +
             "me this permission that's okay; just revoke my 'Read Messages' permission to disable pinning in " +
             f"{channel.mention}."
