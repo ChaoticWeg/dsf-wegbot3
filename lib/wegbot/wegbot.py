@@ -1,14 +1,14 @@
-from discord.ext import commands
-from lib.database import WegbotDatabase
-
 import discord
+from discord.ext import commands
+
+from lib.database import WegbotDatabase
 
 
 class Wegbot(commands.Bot):
     """ Wegbot - subclass of discord.ext.commands.Bot """
 
     description: str = "Wegbot - resident idiot role-lord"
-    version: str = "v3.0.1"
+    version: str = "v3.0.2"
     default_activity: discord.Activity = discord.Game(name=f"wegbot {version} – ?help")
 
     def __init__(self, command_prefix="?"):
