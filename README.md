@@ -64,7 +64,7 @@ These commands are only available to elevated users, known to common folk as "mo
 
 These commands are only available to me (`weg`) as the owner of the bot.
 
-Currently no owner-only commands have been implemented.
+Currently several owner-only commands have been implemented, but documentation for those is still in progress.
 
 <br />
 
@@ -73,4 +73,13 @@ Currently no owner-only commands have been implemented.
 Extensions are actions that the bot takes on its own. Extensions may be triggered by user input, or by some events 
 firing behind the scenes.
 
-Currently no extensions have been implemented.
+- BRO
+    - Responds to "BRO" with "BRO" (among other things). Pretty straightforward. Inspired by `Missy` in the DSF 
+    server, among others.
+- Pinner
+    - Pins messages that garner enough "📌" reactions. The threshold at which messages are pinned can be managed by the 
+    bot owner using `?kv set pin_threshold <number>`.
+    - Note: the bot requires the `manage_messages` permission in the channel where the message was posted to be able to 
+    pin the message, else `discord.py` raises a
+    [`discord.Forbidden`](https://discordpy.readthedocs.io/en/latest/api.html#discord.Forbidden) exception. If this 
+    exception is caught, the bot will notify admins that it needs the proper permission for that channel.
