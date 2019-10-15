@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 
 from .paths import get_data_dir
-from .handlers import RolesHandler, KeyValueHandler
+from .handlers import RolesHandler, KeyValueHandler, AdminChannelHandler
 
 
 class WegbotDatabase:
@@ -15,6 +15,7 @@ class WegbotDatabase:
 
         self.roles = RolesHandler(self.file)
         self.key_value = KeyValueHandler(self.file)
+        self.admin_channel = AdminChannelHandler(self.file)
 
     def initialize(self):
         if self.__initialized:
@@ -22,6 +23,7 @@ class WegbotDatabase:
 
         self.roles.initialize()
         self.key_value.initialize()
+        self.admin_channel.initialize()
 
         self.__initialized = True
 
