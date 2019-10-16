@@ -3,6 +3,15 @@
 Yet another Wegbot rewrite. This time in Python, because the [discord.py](https://github.com/Rapptz/discord.py) rewrite 
 fits our use case _so much_ better than [discord.js](https://discord.js.org). This is not a joke.
 
+<div style="text-align:center">
+    <a href='https://dsf-wegbot3.readthedocs.io/en/latest/?badge=latest'>
+      	<img src='https://readthedocs.org/projects/dsf-wegbot3/badge/?version=latest' alt='Documentation Status' />
+  	</a>
+    <a href="https://github.com/ChaoticWeg/dsf-wegbot3/releases">
+    	<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/chaoticweg/dsf-wegbot3">
+    </a>
+</div>
+
 <br />
 
 ### Table of Contents
