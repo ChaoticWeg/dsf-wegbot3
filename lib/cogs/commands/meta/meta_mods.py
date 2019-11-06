@@ -6,7 +6,8 @@ from lib.errors.commands import CommandNotImplementedError
 class MetaModsCog(WegbotCog, name="MetaMods"):
     """ Tools to determine which roles are mods """
 
-    # @WegbotCog.has_table("mods")
+    @WegbotCog.has_table("mods")
+    @WegbotCog.is_mod()
     @commands.is_owner()
     @commands.group("mods")
     def cmd(self, ctx: commands.Context):
