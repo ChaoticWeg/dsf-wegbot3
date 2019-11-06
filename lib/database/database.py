@@ -26,6 +26,7 @@ class WegbotDatabase:
         self.roles.initialize()
         self.key_value.initialize()
         self.admin_channel.initialize()
+        self.mods.initialize()
 
         self.__initialized = True
 
