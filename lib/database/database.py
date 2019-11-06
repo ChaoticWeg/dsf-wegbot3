@@ -1,8 +1,9 @@
 import sqlite3
 from pathlib import Path
+from discord import Member
 
+from .handlers import RolesHandler, KeyValueHandler, AdminChannelHandler, ModsHandler
 from .paths import get_data_dir
-from .handlers import RolesHandler, KeyValueHandler, AdminChannelHandler
 
 
 class WegbotDatabase:
@@ -16,6 +17,7 @@ class WegbotDatabase:
         self.roles = RolesHandler(self.file)
         self.key_value = KeyValueHandler(self.file)
         self.admin_channel = AdminChannelHandler(self.file)
+        self.mods = ModsHandler(self.file)
 
     def initialize(self):
         if self.__initialized:
@@ -34,5 +36,11 @@ class WegbotDatabase:
         try:
             self.__cnx.execute(f"SELECT 1 FROM {tablename} LIMIT 1")
             return True
+        except sqlite3.OperationalError:
+            return False
+
+    def check_mod(self, member: Member):
+        try:
+            return self.mods.is_mod(member)
         except sqlite3.OperationalError:
             return False
