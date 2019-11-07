@@ -24,9 +24,16 @@ class MetaModsCog(WegbotCog, name="MetaMods"):
             else "there is 1 mod in this server"
         await ctx.send(f"{ctx.author.mention}, {msg}. due to API restrictions, i can't list mods at the moment.")
 
+    @cmd.command("check")
+    async def check(self, ctx: commands.Context, member: discord.Member):
+        """ Check whether a user is a mod """
+        is_mod = self.db.mods.is_mod(member)
+        is_mod_str = "is" if is_mod else "is not"
+        await ctx.send(f"{ctx.author.mention}, `{member}` {is_mod_str} a mod.")
+
     @cmd.command("add")
     async def add(self, ctx: commands.Context, member: discord.Member):
-        """ Add mods by mentioning them """
+        """ Add a mod by mentioning them """
         if self.db.mods.is_mod(member):
             await ctx.send(f"{ctx.author.mention}, `{member}` is already a mod.")
             return
@@ -37,3 +44,13 @@ class MetaModsCog(WegbotCog, name="MetaMods"):
 
         self.db.mods.add(member)
         await ctx.send(f"{ctx.author.mention}, i have added `{member}` as a mod.")
+
+    @cmd.command("remove")
+    async def remove(self, ctx: commands.Context, member: discord.Member):
+        """ Remove a mod by mentioning them """
+        if not self.db.mods.is_mod(member):
+            await ctx.send(f"{ctx.author.mention}, `{member}` is not a mod.")
+            return
+
+        self.db.mods.remove(member)
+        await ctx.send(f"{ctx.author.mention}, i have removed `{member}` as a mod.")
