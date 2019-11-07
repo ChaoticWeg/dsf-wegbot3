@@ -35,7 +35,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
         embed.set_footer(text="Powered by discord.py", icon_url="https://projects.chaoticweg.cc/supereyes.png")
         await ctx.send(embed=embed)
 
-    @commands.is_owner()
+    @WegbotCog.is_mod()
     @cmd.command("add", hidden=True)
     async def add(self, ctx: commands.Context, *, role_name: str):
         """ Add a requestable role to the database """
@@ -49,7 +49,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
         self.db.roles.put(role)
         await ctx.send(f"{ctx.author.mention}, `{role.name}` can now be requested here.")
 
-    @commands.is_owner()
+    @WegbotCog.is_mod()
     @cmd.command("remove", hidden=True)
     async def remove(self, ctx: commands.Context, *, role_name: str):
         """ Remove a requestable role from the database """
@@ -61,7 +61,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
         self.db.roles.remove(role)
         await ctx.send(f"{ctx.author.mention}, `{role.name}` can now **no longer** be requested here.")
 
-    @commands.is_owner()
+    @WegbotCog.is_mod()
     @cmd.command("clear", hidden=True)
     async def clear(self, ctx: commands.Context):
         """ Clear all requestable roles from the database """
