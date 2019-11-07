@@ -12,7 +12,10 @@ class Wegbot(commands.Bot):
     default_activity: discord.Activity = discord.Game(name=f"wegbot {version} – ?help")
 
     def __init__(self, command_prefix="?"):
-        super().__init__(command_prefix, description=Wegbot.description, activity=Wegbot.default_activity)
+        super().__init__(command_prefix,
+                         description=Wegbot.description,
+                         activity=Wegbot.default_activity,
+                         fetch_offline_members=True)
         self.db: WegbotDatabase = WegbotDatabase()
 
     async def on_ready(self):
