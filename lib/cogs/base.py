@@ -3,7 +3,7 @@ from discord.ext import commands
 from ..database import WegbotDatabase
 from ..errors.base import WegbotException
 from ..errors.checks import InvalidTableError, MemberIsNotModError, WegbotCheckFailure
-from ..errors.commands import CommandNotImplementedError, WegbotCommandError
+from ..errors.commands import WegbotCommandError
 from ..errors.database import DatabaseNotReachableError, WegbotDatabaseError
 from ..wegbot import Wegbot
 
@@ -26,7 +26,7 @@ class WegbotCog(commands.Cog):
     def is_mod():
         def check_mod(ctx: commands.Context):
             bot: Wegbot = ctx.bot
-            if not bot.db.check_mod(ctx.author):
+            if not commands.is_owner() and not bot.db.check_mod(ctx.author):
                 raise MemberIsNotModError(ctx.command, ctx.author)
             return True
         return commands.check(check_mod)
@@ -60,8 +60,6 @@ class WegbotCog(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, one or more command checks failed, so i can't respond to that.")
 
         # command errors
-        elif isinstance(error, CommandNotImplementedError):
-            await ctx.send(f"{ctx.author.mention}, weg hasn't finished implementing that command yet.")
         elif isinstance(error, WegbotCommandError):
             await ctx.send(f"{ctx.author.mention}, {error}.")
         elif isinstance(error, commands.MissingRequiredArgument):
