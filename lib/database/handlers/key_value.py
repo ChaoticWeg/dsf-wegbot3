@@ -10,7 +10,7 @@ class KeyValueHandler(DatabaseHandler):
         super().__init__(db_file, "key_value",
                          "key TEXT NOT NULL, value TEXT, guild_id TEXT NOT NULL, UNIQUE(key, guild_id)")
 
-    def get(self, key: str, guild: discord.Guild, default=None):
+    def get(self, key: str, guild: discord.Guild, default=None, transform=lambda v: v):
         cur = self.db.cursor()
         cur.execute("SELECT value FROM key_value WHERE key = ? AND guild_id = ?", (key, str(guild.id)))
         fetched: list = cur.fetchone()
@@ -19,7 +19,7 @@ class KeyValueHandler(DatabaseHandler):
             return default
         value = fetched[0]
         print(f"database: {guild.name} :: {key} = {value}")
-        return value
+        return transform(value)
 
     def has(self, key: str, guild: discord.Guild):
         return self.get(key, guild, default=None) is not None

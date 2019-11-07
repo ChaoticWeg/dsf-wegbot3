@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 from discord import Member
 
-from .handlers import RolesHandler, KeyValueHandler, AdminChannelHandler, ModsHandler
+from .handlers import RolesHandler, KeyValueHandler, AdminChannelHandler, PermissionRequestsHandler, ModsHandler
 from .paths import get_data_dir
 
 
@@ -18,6 +18,7 @@ class WegbotDatabase:
         self.key_value = KeyValueHandler(self.file)
         self.admin_channel = AdminChannelHandler(self.file)
         self.mods = ModsHandler(self.file)
+        self.permission_requests = PermissionRequestsHandler(self.file)
 
     def initialize(self):
         if self.__initialized:
@@ -27,6 +28,7 @@ class WegbotDatabase:
         self.key_value.initialize()
         self.admin_channel.initialize()
         self.mods.initialize()
+        self.permission_requests.initialize()
 
         self.__initialized = True
 
