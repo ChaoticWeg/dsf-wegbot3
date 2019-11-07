@@ -54,3 +54,16 @@ class ModsHandler(DatabaseHandler):
                         member_as_tuple)
         self.db.commit()
         print(f"database: {member.guild.name} :: successfully removed {member} from mods")
+
+    def get_all(self, guild: discord.Guild):
+        print(f"database: {guild.name} :: fetching list of mods")
+        cur = self.db.cursor()
+
+        cur.execute("SELECT user_id FROM mods WHERE guild_id = ?", (str(guild.id),))
+        fetched = cur.fetchall()
+        if fetched is None or len(fetched) == 0:
+            return []
+
+        member_ids = [f[0] for f in fetched if len(f) > 0 and f[0] is not None]
+        print(f"database: {guild.name} :: mod ids - {', '.join(member_ids)}")
+        return member_ids
