@@ -10,7 +10,7 @@ class Wegbot(commands.Bot):
     """ Wegbot - subclass of discord.ext.commands.Bot """
 
     description: str = "Wegbot - resident idiot role-lord"
-    version: str = "v3.0.2"
+    version: str = "v3.1.0"
     default_activity: discord.Activity = discord.Game(name=f"wegbot {version} – ?help")
 
     permission_request_interval: timedelta = timedelta(hours=12)
