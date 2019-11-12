@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import json
 
 import discord
 from discord.ext import commands
@@ -6,12 +7,20 @@ from discord.ext import commands
 from lib.database import WegbotDatabase
 
 
+def read_metadata():
+    with open("meta.json", "r") as jsonfile:
+        return json.load(jsonfile)
+
+
+metadata = read_metadata()
+
+
 class Wegbot(commands.Bot):
     """ Wegbot - subclass of discord.ext.commands.Bot """
 
-    description: str = "Wegbot - resident idiot role-lord"
-    version: str = "v3.1.0"
-    default_activity: discord.Activity = discord.Game(name=f"wegbot {version} – ?help")
+    description: str = metadata["description"]
+    version: str = metadata["version"]
+    default_activity: discord.Activity = discord.Game(name=f"wegbot v{version} – ?help")
 
     permission_request_interval: timedelta = timedelta(hours=12)
 
