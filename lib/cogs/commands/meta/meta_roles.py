@@ -22,8 +22,8 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @cmd.command("list")
     async def list(self, ctx: commands.Context):
         """ List available roles """
-        roles = self.db.roles.get_all(ctx.guild)
-        role_names = [f"`{r.name}`" for r in roles if r is not None]
+        roles: typing.List[discord.Role] = self.db.roles.get_all(ctx.guild)
+        role_names: typing.List[str] = [f"`{r.name}`" for r in roles if r is not None] if roles is not None else []
 
         roles_summary: str = "\n".join(role_names) if len(role_names) > 0 else "**(none)**"
 
@@ -47,7 +47,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
 
         new_requestable_roles: typing.List[discord.Role] = []
         for role_name in role_names:
-            role: discord.Role = discord.utils.get(ctx.guild.roles, name=role_name)
+            role: discord.Role = discord.utils.find(lambda r: r.name.upper() == role_name.upper(), ctx.guild.roles)
 
             if role is None:
                 raise NoSuchRoleError(role_name)
@@ -63,7 +63,7 @@ class MetaRolesCog(WegbotCog, name="MetaRoles"):
     @cmd.command("remove", hidden=True)
     async def remove(self, ctx: commands.Context, *, role_name: str):
         """ Remove a requestable role from the database """
-        role: discord.Role = discord.utils.get(ctx.guild.roles, name=role_name)
+        role: discord.Role = discord.utils.find(lambda r: r.name.upper() == role_name.upper(), ctx.guild.roles)
 
         if role is None:
             raise NoSuchRoleError(role_name)
