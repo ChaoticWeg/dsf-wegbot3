@@ -14,4 +14,5 @@ RUN make install
 # copy in files
 COPY . /src
 
+# define entry point
 ENTRYPOINT ["python", "run.py"]
